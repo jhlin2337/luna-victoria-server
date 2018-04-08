@@ -1,0 +1,29 @@
+{
+  "name": "luna-victoria-server",
+  "version": "1.0.0",
+  "description": "Node restful api for a monthly goals planner",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "keywords": [
+    "planner",
+    "goals",
+    "monthly",
+    "month",
+    "rest",
+    "api"
+  ],
+  "author": "James Lin",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "mongoose": "^5.0.13"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.3"
+  }
+}
