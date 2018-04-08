@@ -18,9 +18,11 @@
   "author": "James Lin",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^2.0.0",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "express": "^4.16.3",
+    "jsonwebtoken": "^8.2.1",
     "mongoose": "^5.0.13"
   },
   "devDependencies": {

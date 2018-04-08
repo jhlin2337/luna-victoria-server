@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 
 const keys = require('./config/keys');
 
+const userRoutes = require('./api/routes/users');
 const goalRoutes = require('./api/routes/goals');
 
 // Connect to mlabs
@@ -16,6 +17,8 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(cors());
 
+// Handles routes that have been defined in our api
+app.use('/api/users', userRoutes);
 app.use('/api/goals', goalRoutes);
 
 // Routes not in our api that the user enters as a url passes through here
