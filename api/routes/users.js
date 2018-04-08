@@ -73,7 +73,7 @@ router.post("/login", (req, res, next) => {
                     const token = jwt.sign(
                         { email: user[0].email, userId: user[0]._id },
                         keys.jwtKey,
-                        { expiresIn: "2h" }
+                        { expiresIn: "1h" }
                     );
 
                     // Send jwt token to client
@@ -90,7 +90,7 @@ router.post("/login", (req, res, next) => {
 });
 
 // Delete user
-router.delete("/:userId", (req, res, next) => {
+router.delete("/:userId", checkAuth, (req, res, next) => {
     // Remove user from database
     User.remove({ _id: req.params.userId })
         .exec()

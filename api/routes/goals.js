@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
+
+const checkAuth = require('../middleware/check-auth');
 const Goal = require('../models/goal');
 
 // Gets data from database and load as json file
-router.get('/', (req, res, next) => {
+router.get('/', checkAuth, (req, res, next) => {
     Goal.find()
         .select('_id title description deadline')
         .exec()
@@ -16,7 +18,7 @@ router.get('/', (req, res, next) => {
 });
 
 // Gets data from database within specified time range and load as json file
-router.get('/:start([0-9]+)/:end([0-9]+)', (req, res, next) => {
+router.get('/:start([0-9]+)/:end([0-9]+)', checkAuth, (req, res, next) => {
     const startDate = new Date(Number(req.params.start));
     const endDate = new Date(Number(req.params.end));
     Goal.find()
@@ -31,7 +33,7 @@ router.get('/:start([0-9]+)/:end([0-9]+)', (req, res, next) => {
 });
 
 // Retrieves data from client and stores into database
-router.post('/', (req, res, next) => {
+router.post('/', checkAuth, (req, res, next) => {
     // Create new goal using user's post request
     const goal = new Goal({
         title: req.body.title,
@@ -53,7 +55,7 @@ router.post('/', (req, res, next) => {
 });
 
 // Updates data in the database
-router.patch('/:goalId', (req, res, next) => {
+router.patch('/:goalId', checkAuth, (req, res, next) => {
     Goal.update({ _id: req.params.goalId }, { $set: req.body })
         .exec()
         .then(result => {
@@ -65,7 +67,7 @@ router.patch('/:goalId', (req, res, next) => {
 });
 
 // Deletes data from the database
-router.delete('/:goalId', (req, res, next) => {
+router.delete('/:goalId', checkAuth, (req, res, next) => {
     Goal.remove({ _id: req.params.goalId })
         .exec()
         .then(result => {
