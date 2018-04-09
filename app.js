@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -13,6 +14,7 @@ const goalRoutes = require('./api/routes/goals');
 mongoose.connect(keys.mongoURI);
 
 // Set up bodyparser and cors as middleware
+app.use(helmet());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(cors());
