@@ -8,6 +8,7 @@ const Goal = require('../models/goal');
 router.get('/', checkAuth, (req, res, next) => {
     Goal.find()
         .where('userId').equals(req.userData.userId)
+        .sort('deadline')
         .select('_id title description deadline')
         .exec()
         .then(result => {
@@ -25,6 +26,7 @@ router.get('/:start([0-9]+)/:end([0-9]+)', checkAuth, (req, res, next) => {
     Goal.find()
         .where('userId').equals(req.userData.userId)
         .where('deadline').gte(startDate).lt(endDate)
+        .sort('deadline')
         .select('_id title description deadline')
         .exec()
         .then(result => {
