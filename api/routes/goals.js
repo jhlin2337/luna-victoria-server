@@ -7,6 +7,7 @@ const Goal = require('../models/goal');
 // Gets data from database and load as json file
 router.get('/', checkAuth, (req, res, next) => {
     Goal.find()
+        .where('userId').equals(req.userData.userId)
         .select('_id title description deadline')
         .exec()
         .then(result => {
@@ -22,7 +23,9 @@ router.get('/:start([0-9]+)/:end([0-9]+)', checkAuth, (req, res, next) => {
     const startDate = new Date(Number(req.params.start));
     const endDate = new Date(Number(req.params.end));
     Goal.find()
+        .where('userId').equals(req.userData.userId)
         .where('deadline').gte(startDate).lt(endDate)
+        .select('_id title description deadline')
         .exec()
         .then(result => {
             res.status(200).json(result);
@@ -36,6 +39,7 @@ router.get('/:start([0-9]+)/:end([0-9]+)', checkAuth, (req, res, next) => {
 router.post('/', checkAuth, (req, res, next) => {
     // Create new goal using user's post request
     const goal = new Goal({
+        userId: req.userData.userId,
         title: req.body.title,
         description: req.body.description,
         deadline: req.body.deadline
@@ -56,10 +60,15 @@ router.post('/', checkAuth, (req, res, next) => {
 
 // Updates data in the database
 router.patch('/:goalId', checkAuth, (req, res, next) => {
-    Goal.update({ _id: req.params.goalId }, { $set: req.body })
+    Goal.where('userId').equals(req.userData.userId)
+        .update({ _id: req.params.goalId }, { $set: req.body })
         .exec()
         .then(result => {
-            res.status(200).json({ message: 'Goal updated' });
+            if (result.n < 1) {
+                res.status(404).json({ message: 'Goal not found' });
+            } else {
+                res.status(200).json({ message: 'Goal updated' });
+            }
         })
         .catch(err => {
             res.status(500).json({ error: err });
@@ -68,10 +77,15 @@ router.patch('/:goalId', checkAuth, (req, res, next) => {
 
 // Deletes data from the database
 router.delete('/:goalId', checkAuth, (req, res, next) => {
-    Goal.remove({ _id: req.params.goalId })
+    Goal.where('userId').equals(req.userData.userId)
+        .remove({ _id: req.params.goalId })
         .exec()
         .then(result => {
-            res.status(200).json({ message: 'Product deleted' });
+            if (result.n < 1) {
+                res.status(404).json({ message: 'Goal not found' });
+            } else {
+                res.status(200).json({ message: 'Goal deleted' });
+            }
         })
         .catch(err => {
             res.status(500).json({ error: err });
