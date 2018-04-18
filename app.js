@@ -19,9 +19,6 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(cors());
 
-// Set static folder
-app.use(express.static(path.join(__dirname, 'public')));
-
 // Handles routes that have been defined in our api
 app.use('/api/users', userRoutes);
 app.use('/api/goals', goalRoutes);
