@@ -9,7 +9,7 @@ router.get('/', checkAuth, (req, res, next) => {
     Goal.find()
         .where('userId').equals(req.userData.userId)
         .sort('deadline')
-        .select('_id title description deadline completed')
+        .select('_id userId title description deadline completed')
         .exec()
         .then(result => {
             res.status(200).json(result);
@@ -27,7 +27,7 @@ router.get('/:start([0-9]+)/:end([0-9]+)', checkAuth, (req, res, next) => {
         .where('userId').equals(req.userData.userId)
         .where('deadline').gte(startDate).lt(endDate)
         .sort('deadline')
-        .select('_id title description deadline completed')
+        .select('_id userId title description deadline completed')
         .exec()
         .then(result => {
             res.status(200).json(result);

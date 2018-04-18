@@ -79,7 +79,7 @@ router.post("/login", (req, res, next) => {
                     );
 
                     // Send jwt token to client
-                    return res.status(200).json({ message: "Auth successful", token: token });
+                    return res.status(200).json({ message: "Auth successful", userId: user[0]._id, token: token });
                 }
 
                 // Handles failed validation
